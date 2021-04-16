@@ -16,6 +16,7 @@
 #include "DebugTapConnection.h"
 #include "SettingsTab.h"
 #include "RenameWindowRequestedArgs.g.cpp"
+#include "TerminalPersistence.h"
 
 using namespace winrt;
 using namespace winrt::Windows::Foundation::Collections;
@@ -1119,6 +1120,28 @@ namespace winrt::TerminalApp::implementation
     //   than one tab opened, show a warning dialog.
     fire_and_forget TerminalPage::CloseWindow()
     {
+        std::vector<std::wstring> profiles;
+        ::Microsoft::Terminal::Persistence::Model::Root root{};
+
+        for (const auto& tabBase : _tabs)
+        {
+            const auto tab = _GetTerminalTabImpl(tabBase);
+            if (!tab)
+            {
+                continue;
+            }
+
+            auto profile = tab->GetFocusedProfile();
+            if (!profile)
+            {
+                continue;
+            }
+
+            profiles.emplace_back(::Microsoft::Console::Utils::GuidToString(*profile));
+        }
+
+        Json::Value json{ Json::ValueType::objectValue };
+
         if (_HasMultipleTabs() &&
             _settings.GlobalSettings().ConfirmCloseAllTabs() &&
             !_displayingCloseDialog)

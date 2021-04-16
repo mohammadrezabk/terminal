@@ -49,6 +49,7 @@
     <ClCompile Include="HighlightedText.cpp">
       <Filter>highlightedText</Filter>
     </ClCompile>
+    <ClCompile Include="$(OpenConsoleDir)\dep\jsoncpp\jsoncpp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h" />
@@ -92,6 +93,7 @@
     <ClInclude Include="HighlightedText.h">
       <Filter>highlightedText</Filter>
     </ClInclude>
+    <ClInclude Include="TerminalPersistence.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="AppLogic.idl">
