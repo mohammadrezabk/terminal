@@ -49,6 +49,21 @@ namespace winrt::Microsoft::Terminal::Settings::Model::implementation
         return warnings;
     }
 
+    Json::Value ActionMap::ToJson() const
+    {
+        Json::Value actionList{ Json::ValueType::arrayValue };
+        for(const auto& [_, cmd] : _ActionMap)
+        {
+            const auto cmdImpl{ winrt::get_self<implementation::Command>(cmd) };
+
+            const auto& cmdJson{ cmdImpl->ToJson() };
+
+
+            actionList.append();
+        }
+        return actionList;
+    }
+
     // Method Description:
     // - Takes the KeyModifier flags from Terminal and maps them to the WinRT types which are used by XAML
     // Return Value:

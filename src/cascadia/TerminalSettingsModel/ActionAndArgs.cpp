@@ -265,6 +265,10 @@ namespace winrt::Microsoft::Terminal::Settings::Model::implementation
         return make_self<ActionAndArgs>(action, args);
     }
 
+    Json::Value ActionAndArgs::ToJson(const Model::ActionAndArgs& val)
+    {
+    }
+
     com_ptr<ActionAndArgs> ActionAndArgs::Copy() const
     {
         auto copy{ winrt::make_self<ActionAndArgs>() };

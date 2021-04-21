@@ -407,6 +407,41 @@ namespace winrt::Microsoft::Terminal::Settings::Model::implementation
         return warnings;
     }
 
+    Json::Value Command::ToJson() const
+    {
+        Json::Value cmdList{ Json::ValueType::arrayValue };
+
+        if (_keyMappings.empty())
+        {
+            // only write out one command
+            Json::Value cmdJson{ Json::ValueType::objectValue };
+            JsonUtils::SetValueForKey(cmdJson, IconKey, _iconPath);
+            JsonUtils::SetValueForKey(cmdJson, NameKey, _name);
+            // TODO CARLOS: ActionAndArgs::ToJson
+            cmdList.append(cmdJson);
+        }
+        else
+        {
+            // we'll write out one command per key mapping
+            for (auto keys{ _keyMappings.begin() }; keys != _keyMappings.end(); ++keys)
+            {
+                Json::Value cmdJson{ Json::ValueType::objectValue };
+
+                if (keys == _keyMappings.begin())
+                {
+                    // First iteration also writes icon and name
+                    JsonUtils::SetValueForKey(cmdJson, IconKey, _iconPath);
+                    JsonUtils::SetValueForKey(cmdJson, NameKey, _name);
+                }
+                // TODO CARLOS: ActionAndArgs::ToJson
+                JsonUtils::SetValueForKey(cmdJson, KeysKey, *keys);
+                cmdList.append(cmdJson);
+            }
+        }
+
+        return cmdList;
+    }
+
     // Function Description:
     // - Helper to escape a string as a json string. This function will also
     //   trim off the leading and trailing double-quotes, so the output string

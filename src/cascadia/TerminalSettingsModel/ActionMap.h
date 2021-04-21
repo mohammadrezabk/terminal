@@ -86,6 +86,8 @@ namespace winrt::Microsoft::Terminal::Settings::Model::implementation
         void AddAction(const Model::Command& cmd);
         std::vector<SettingsLoadWarnings> LayerJson(const Json::Value& json);
 
+        Json::Value ToJson() const;
+
         static Windows::System::VirtualKeyModifiers ConvertVKModifiers(Control::KeyModifiers modifiers);
 
     private:
